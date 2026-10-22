@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Иванов И.И.",
+        "department": "Информатика",
+        "max_students": 3,
+        "consultation_time": "14:00"
+    },
+    {
+        "id": 2,
+        "name": "Петрова А.А.",
+        "department": "Высшая математика",
+        "max_students": 5,
+        "consultation_time": "12:30"
+    },
+    {
+        "id": 3,
+        "name": "Сидоров П.П.",
+        "department": "Информатика",
+        "max_students": 2,
+        "consultation_time": "16:00"
+    },
+    {
+        "id": 4,
+        "name": "Кузнецова Е.В.",
+        "department": "Иностранные языки",
+        "max_students": 4,
+        "consultation_time": "10:00"
+    }
+]
