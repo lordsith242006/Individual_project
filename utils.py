@@ -30,8 +30,3 @@ def input_text(prompt: str) -> str:
         if text:
             return text
         print("Значение не может быть пустым.")
-
-
-def format_date(iso_date: str) -> str:
-    """Преобразовать дату ГГГГ-ММ-ДД в ДД.ММ.ГГГГ для вывода."""
-    return date.fromisoformat(iso_date).strftime(DATE_FORMAT)

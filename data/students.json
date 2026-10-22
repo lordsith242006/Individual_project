@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Смирнов Алексей",
+        "email": "smirnov@student.example.com",
+        "group": "ИВТ-21"
+    },
+    {
+        "id": 2,
+        "name": "Орлова Мария",
+        "email": "orlova@student.example.com",
+        "group": "ИВТ-21"
+    },
+    {
+        "id": 3,
+        "name": "Волков Дмитрий",
+        "email": "volkov@student.example.com",
+        "group": "ПИ-22"
+    },
+    {
+        "id": 4,
+        "name": "Соколова Анна",
+        "email": "sokolova@student.example.com",
+        "group": "ПИ-22"
+    }
+]

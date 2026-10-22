@@ -2,25 +2,36 @@
     {
         "id": 1,
         "teacher_id": 1,
-        "student_name": "Смирнов Алексей",
-        "consultation_date": "2026-09-20"
+        "student_id": 1,
+        "consultation_date": "2026-09-20",
+        "is_cancelled": false
     },
     {
         "id": 2,
         "teacher_id": 3,
-        "student_name": "Орлова Мария",
-        "consultation_date": "2026-09-21"
+        "student_id": 2,
+        "consultation_date": "2026-09-21",
+        "is_cancelled": false
     },
     {
         "id": 3,
         "teacher_id": 3,
-        "student_name": "Волков Дмитрий",
-        "consultation_date": "2026-09-21"
+        "student_id": 3,
+        "consultation_date": "2026-09-21",
+        "is_cancelled": false
     },
     {
         "id": 4,
         "teacher_id": 2,
-        "student_name": "Смирнов Алексей",
-        "consultation_date": "2026-09-22"
+        "student_id": 1,
+        "consultation_date": "2026-09-22",
+        "is_cancelled": false
+    },
+    {
+        "id": 5,
+        "teacher_id": 1,
+        "student_id": 4,
+        "consultation_date": "2026-09-20",
+        "is_cancelled": true
     }
 ]

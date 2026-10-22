@@ -1,7 +1,13 @@
 """Сохранение и загрузка данных проекта в JSON-файлах."""
 
 import json
+from datetime import date
 from pathlib import Path
+from typing import List
+
+from models import Appointment, Student, Teacher
+from models.students import find_student_by_id
+from models.teachers import find_teacher_by_id
 
 
 def load_json(filename: str | Path) -> list[dict]:
@@ -31,29 +37,69 @@ def save_json(filename: str | Path, data: list[dict]) -> None:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 
-def load_teachers(filename: str | Path) -> dict[int, dict]:
-    """Загрузить преподавателей: список JSON -> словарь {id: данные}."""
-    teachers = {}
+def load_teachers(filename: str | Path) -> List[Teacher]:
+    """Загрузить преподавателей: JSON -> объекты Teacher."""
+    teachers = []
     for item in load_json(filename):
-        teacher = dict(item)
-        teachers[teacher.pop("id")] = teacher
+        try:
+            teachers.append(Teacher.from_data(item))
+        except (KeyError, ValueError):
+            print(f"Пропущена некорректная запись преподавателя: {item}")
     return teachers
 
 
-def save_teachers(filename: str | Path, teachers: dict[int, dict]) -> None:
-    """Сохранить преподавателей: словарь {id: данные} -> список JSON."""
-    data = [
-        {"id": teacher_id, **teacher}
-        for teacher_id, teacher in teachers.items()
-    ]
-    save_json(filename, data)
+def save_teachers(filename: str | Path, teachers: List[Teacher]) -> None:
+    """Сохранить преподавателей: объекты Teacher -> JSON."""
+    save_json(filename, [teacher.to_data() for teacher in teachers])
 
 
-def load_appointments(filename: str | Path) -> list[dict]:
-    """Загрузить записи на консультации."""
-    return load_json(filename)
+def load_students(filename: str | Path) -> List[Student]:
+    """Загрузить студентов: JSON -> объекты Student."""
+    students = []
+    for item in load_json(filename):
+        try:
+            students.append(Student.from_data(item))
+        except KeyError:
+            print(f"Пропущена некорректная запись студента: {item}")
+    return students
 
 
-def save_appointments(filename: str | Path, appointments: list[dict]) -> None:
-    """Сохранить записи на консультации."""
-    save_json(filename, appointments)
+def save_students(filename: str | Path, students: List[Student]) -> None:
+    """Сохранить студентов: объекты Student -> JSON."""
+    save_json(filename, [student.to_data() for student in students])
+
+
+def load_appointments(
+    filename: str | Path,
+    teachers: List[Teacher],
+    students: List[Student],
+) -> List[Appointment]:
+    """Загрузить записи: JSON -> объекты Appointment.
+
+    Идентификаторы teacher_id и student_id заменяются ссылками на объекты.
+    """
+    appointments = []
+    for item in load_json(filename):
+        try:
+            teacher = find_teacher_by_id(teachers, item["teacher_id"])
+            student = find_student_by_id(students, item["student_id"])
+            if teacher is None or student is None:
+                raise LookupError
+            appointments.append(Appointment(
+                item["id"],
+                teacher,
+                student,
+                date.fromisoformat(item["consultation_date"]),
+                item.get("is_cancelled", False),
+            ))
+        except (KeyError, LookupError, ValueError):
+            print(f"Пропущена некорректная запись: {item}")
+    return appointments
+
+
+def save_appointments(
+    filename: str | Path,
+    appointments: List[Appointment],
+) -> None:
+    """Сохранить записи: объекты Appointment -> JSON."""
+    save_json(filename, [a.to_data() for a in appointments])
