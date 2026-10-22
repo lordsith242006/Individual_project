@@ -60,7 +60,7 @@ appointment
 Технологии: Python, Django 5.2, HTML, CSS и Bootstrap 5.3.
 
 Django-приложения:
-* `homepage` — главная страница, общий HTML-каркас `page()`, страница 404;
+* `homepage` — главная страница, страница 404, статические файлы (CSS, JS, логотип);
 * `teachers` — список преподавателей (поиск по ФИО, отбор по местам)
   и карточка преподавателя;
 * `appointments` — список записей и страница отдельной записи.
@@ -74,8 +74,30 @@ Django-приложения:
 | `/appointments/<id>/` | `appointments.views.appointment_detail` | запись |
 
 View-функции получают данные через `storage.load_project_data()`
-(JSON → объекты `Teacher`, `Student`, `Appointment`) и формируют HTML-ответ.
+(JSON → объекты `Teacher`, `Student`, `Appointment`), формируют контекст
+и вызывают `render()`. HTML формируют шаблоны Django.
 Для несуществующих объектов возвращается код 404.
+
+### Шаблоны
+* `templates/base.html` — базовый шаблон: Bootstrap, CSS, навигация,
+  блоки `title` и `content`, подвал, подключение JS;
+* `templates/includes/navigation.html` — меню с подсветкой активного раздела;
+* `templates/404.html` — страница ошибки;
+* `homepage/index.html`, `teachers/teacher_list.html`,
+  `teachers/teacher_detail.html`, `appointments/appointment_list.html`,
+  `appointments/appointment_detail.html` — страницы приложений
+  (`{% extends "base.html" %}`);
+* `teachers/includes/teacher_card.html`,
+  `appointments/includes/appointment_status.html` — подключаемые фрагменты
+  (`{% include %}`).
+
+В шаблонах используются `{% for %}…{% empty %}`, `{% if %}`,
+`{% url 'teachers:detail' teacher.id %}` (пространства имён `app_name`),
+фильтры `date`, `default`, `length`, `pluralize`, `truncatechars`,
+`upper`, `lower`, теги `{% static %}` и `{% now %}`.
+
+### Статические файлы
+`homepage/static/homepage/css/style.css`, `js/main.js`, `img/logo.png`.
 
 ## Структура проекта
 ```
@@ -84,6 +106,7 @@ Individual_project/
 ├── requirements.txt
 ├── manage.py            — управление Django-проектом
 ├── consultplan/         — настройки и корневые маршруты Django
+├── templates/           — шаблоны уровня проекта (base, navigation)
 ├── homepage/            — приложение главной страницы
 ├── teachers/            — приложение преподавателей
 ├── appointments/        — приложение записей
@@ -115,7 +138,7 @@ Individual_project/
 
 ```
 python -m venv venv
-venv\Scriptsctivate
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -141,7 +164,6 @@ flake8
 ```
 
 ## План развития
-- шаблоны Django и статические файлы;
-- база данных;
+- база данных SQLite;
 - пользователи и авторизация;
 - REST API, Docker, CI/CD.

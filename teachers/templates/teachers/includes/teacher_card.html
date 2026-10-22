@@ -1,0 +1,12 @@
+<div class="col-md-6 col-lg-4">
+    <div class="card teacher-card h-100">
+        <div class="card-body">
+            <h2 class="h5 card-title">{{ teacher.name|default:"Без имени" }}</h2>
+            <p class="card-text mb-1">{{ teacher.department|default:"Кафедра не указана" }}</p>
+            <p class="card-text mb-1">Консультации в {{ teacher.consultation_time }}</p>
+            <p class="card-text">Мест: {{ teacher.max_students }}</p>
+            <a class="btn btn-sm btn-outline-primary"
+               href="{% url 'teachers:detail' teacher.id %}">Подробнее</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Преподаватели{% endblock %}
+
+{% block content %}
+<h1>Преподаватели</h1>
+
+<form class="row g-2 mb-3" method="get">
+    <div class="col-md-5">
+        <input class="form-control" name="q" placeholder="ФИО"
+               value="{{ query }}">
+    </div>
+    <div class="col-md-4">
+        <input class="form-control" name="min_students" type="number" min="1"
+               placeholder="Мест не меньше" value="{{ min_students }}">
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-primary w-100">Найти</button>
+    </div>
+</form>
+
+<p class="text-muted">Найдено: {{ teachers|length }}</p>
+
+<div class="row g-3">
+    {% for teacher in teachers %}
+        {% include "teachers/includes/teacher_card.html" %}
+    {% empty %}
+        <p>Преподаватели не найдены.</p>
+    {% endfor %}
+</div>
+{% endblock %}

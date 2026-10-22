@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Страница не найдена{% endblock %}
+
+{% block content %}
+<div class="alert alert-warning">
+    <h1>Страница не найдена (404)</h1>
+    <p>Запрошенный адрес <code>{{ request.path }}</code> не существует.</p>
+    <a class="btn btn-primary" href="{% url 'homepage:index' %}">На главную</a>
+</div>
+{% endblock %}

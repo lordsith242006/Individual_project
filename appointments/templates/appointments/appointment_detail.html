@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{% if appointment %}Запись #{{ appointment.id }}{% else %}Запись не найдена{% endif %}{% endblock %}
+
+{% block content %}
+{% if appointment %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h1 class="card-title">
+                Запись #{{ appointment.id }}
+                {% include "appointments/includes/appointment_status.html" %}
+            </h1>
+            <p>Дата: {{ appointment.consultation_date|date:"d E Y" }}
+               в {{ appointment.teacher.consultation_time }}</p>
+            <p>Преподаватель:
+                <a href="{% url 'teachers:detail' appointment.teacher.id %}">{{ appointment.teacher.name }}</a>
+                ({{ appointment.teacher.department }})</p>
+            <p>Студент: {{ appointment.student.name }},
+               гр. {{ appointment.student.group|upper }},
+               {{ appointment.student.email|lower }}</p>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Запись с номером {{ appointment_id }} не найдена.
+    </div>
+{% endif %}
+<a href="{% url 'appointments:list' %}">К списку записей</a>
+{% endblock %}

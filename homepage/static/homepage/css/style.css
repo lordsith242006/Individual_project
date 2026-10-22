@@ -1,0 +1,39 @@
+:root {
+    --brand: #0d6efd;
+    --brand-light: #e7f1ff;
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--brand-light), #ffffff);
+    border-left: 6px solid var(--brand);
+}
+
+.stat-card {
+    background: #ffffff;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--brand);
+}
+
+.teacher-card {
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.teacher-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.appointment-cancelled td {
+    color: #6c757d;
+    text-decoration: line-through;
+}
+
+.site-footer {
+    border-top: 1px solid #dee2e6;
+    background: #ffffff;
+}

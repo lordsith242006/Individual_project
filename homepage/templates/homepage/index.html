@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero p-4 rounded shadow-sm mb-4">
+    <h1>Сервис планирования консультационных часов</h1>
+    <p class="lead mb-0">
+        Запись студентов на консультации к преподавателям: выбор
+        преподавателя, проверка свободных мест на дату, создание и отмена
+        записи.
+    </p>
+</section>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ teachers_count }}</div>
+            <div>преподавател{{ teachers_count|pluralize:"ь,я,ей" }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ students_count }}</div>
+            <div>студент{{ students_count|pluralize:",а,ов" }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ active_count }}</div>
+            <div>активных записей</div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary" href="{% url 'teachers:list' %}">Преподаватели</a>
+<a class="btn btn-outline-primary" href="{% url 'appointments:list' %}">
+    Записи на консультации
+</a>
+{% endblock %}

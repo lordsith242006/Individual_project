@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Записи{% endblock %}
+
+{% block content %}
+<h1>Записи на консультации</h1>
+<p class="text-muted">Всего записей: {{ appointments|length }}</p>
+
+<table class="table table-hover bg-white">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Дата и время</th>
+            <th>Преподаватель</th>
+            <th>Студент</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+            <tr data-href="{% url 'appointments:detail' appointment.id %}"
+                {% if appointment.is_cancelled %}class="appointment-cancelled"{% endif %}>
+                <td>#{{ appointment.id }}</td>
+                <td>{{ appointment.consultation_date|date:"d.m.Y" }}
+                    {{ appointment.teacher.consultation_time }}</td>
+                <td>{{ appointment.teacher.name }}</td>
+                <td>{{ appointment.student.name|truncatechars:30 }}</td>
+                <td>{% include "appointments/includes/appointment_status.html" %}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">Записей нет.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

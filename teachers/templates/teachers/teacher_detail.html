@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{% if teacher %}{{ teacher.name }}{% else %}Преподаватель не найден{% endif %}{% endblock %}
+
+{% block content %}
+{% if teacher %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h1 class="card-title">{{ teacher.name }}</h1>
+            <p class="card-text">Кафедра: {{ teacher.department }}</p>
+            <p class="card-text">Время консультаций: {{ teacher.consultation_time }}</p>
+            <p class="card-text">Мест на консультации: {{ teacher.max_students }}</p>
+        </div>
+    </div>
+
+    <h2>Активные записи</h2>
+    <ul class="list-group mb-3">
+        {% for appointment in appointments %}
+            <li class="list-group-item">
+                <a href="{% url 'appointments:detail' appointment.id %}">#{{ appointment.id }}</a>
+                {{ appointment.consultation_date|date:"d.m.Y" }} —
+                {{ appointment.student.name }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">Активных записей нет.</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-warning">
+        Преподаватель с номером {{ teacher_id }} не найден.
+    </div>
+{% endif %}
+<a href="{% url 'teachers:list' %}">К списку преподавателей</a>
+{% endblock %}
