@@ -1,18 +1,19 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from storage import load_project_data
+from db.database import fetch_one
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    """Главная страница: назначение сервиса и сводка данных."""
-    teachers, students, appointments = load_project_data()
-    context = {
-        "teachers_count": len(teachers),
-        "students_count": len(students),
-        "active_count": sum(1 for a in appointments if a.is_active),
-    }
-    return render(request, "homepage/index.html", context)
+    """Главная страница: назначение сервиса и сводка данных из SQLite."""
+    summary = fetch_one("""
+        SELECT
+            (SELECT COUNT(*) FROM teachers) AS teachers_count,
+            (SELECT COUNT(*) FROM students) AS students_count,
+            (SELECT COUNT(*) FROM appointments
+             WHERE is_cancelled = 0) AS active_count
+    """)
+    return render(request, "homepage/index.html", dict(summary))
 
 
 def page_not_found(request: HttpRequest, exception: Exception) -> HttpResponse:

@@ -21,10 +21,9 @@
             <tr data-href="{% url 'appointments:detail' appointment.id %}"
                 {% if appointment.is_cancelled %}class="appointment-cancelled"{% endif %}>
                 <td>#{{ appointment.id }}</td>
-                <td>{{ appointment.consultation_date|date:"d.m.Y" }}
-                    {{ appointment.teacher.consultation_time }}</td>
-                <td>{{ appointment.teacher.name }}</td>
-                <td>{{ appointment.student.name|truncatechars:30 }}</td>
+                <td>{{ appointment.date_display }} {{ appointment.consultation_time }}</td>
+                <td>{{ appointment.teacher_name }}</td>
+                <td>{{ appointment.student_name|truncatechars:30 }}</td>
                 <td>{% include "appointments/includes/appointment_status.html" %}</td>
             </tr>
         {% empty %}

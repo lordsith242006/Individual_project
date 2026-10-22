@@ -1,20 +1,24 @@
 {% load static %}
 {% with url_name=request.resolver_match.url_name namespace=request.resolver_match.namespace %}
-<nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">
-    <div class="container">
+<nav class="navbar navbar-expand navbar-dark bg-primary mb-4">
+    <div class="container flex-wrap">
         <a class="navbar-brand d-flex align-items-center gap-2"
            href="{% url 'homepage:index' %}">
             <img src="{% static 'homepage/img/logo.png' %}" alt="Логотип"
                  width="32" height="32">
             КонсультПлан
         </a>
-        <div class="navbar-nav">
+        <div class="navbar-nav flex-wrap">
             <a class="nav-link {% if namespace == 'homepage' %}active{% endif %}"
                href="{% url 'homepage:index' %}">Главная</a>
-            <a class="nav-link {% if namespace == 'teachers' %}active{% endif %}"
+            <a class="nav-link {% if namespace == 'teachers' and url_name != 'available' %}active{% endif %}"
                href="{% url 'teachers:list' %}">Преподаватели</a>
-            <a class="nav-link {% if namespace == 'appointments' %}active{% endif %}"
+            <a class="nav-link {% if url_name == 'available' %}active{% endif %}"
+               href="{% url 'teachers:available' %}">Свободные места</a>
+            <a class="nav-link {% if namespace == 'appointments' and url_name != 'statistics' %}active{% endif %}"
                href="{% url 'appointments:list' %}">Записи</a>
+            <a class="nav-link {% if url_name == 'statistics' %}active{% endif %}"
+               href="{% url 'appointments:statistics' %}">Статистика</a>
         </div>
     </div>
 </nav>

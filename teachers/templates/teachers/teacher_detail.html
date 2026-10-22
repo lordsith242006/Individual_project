@@ -18,8 +18,8 @@
         {% for appointment in appointments %}
             <li class="list-group-item">
                 <a href="{% url 'appointments:detail' appointment.id %}">#{{ appointment.id }}</a>
-                {{ appointment.consultation_date|date:"d.m.Y" }} —
-                {{ appointment.student.name }}
+                {{ appointment.date_display }} —
+                {{ appointment.student_name }}, гр. {{ appointment.group_name|default:"—" }}
             </li>
         {% empty %}
             <li class="list-group-item">Активных записей нет.</li>

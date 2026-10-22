@@ -10,14 +10,14 @@
                 Запись #{{ appointment.id }}
                 {% include "appointments/includes/appointment_status.html" %}
             </h1>
-            <p>Дата: {{ appointment.consultation_date|date:"d E Y" }}
-               в {{ appointment.teacher.consultation_time }}</p>
+            <p>Дата: {{ appointment.date_display }}
+               в {{ appointment.consultation_time }}</p>
             <p>Преподаватель:
-                <a href="{% url 'teachers:detail' appointment.teacher.id %}">{{ appointment.teacher.name }}</a>
-                ({{ appointment.teacher.department }})</p>
-            <p>Студент: {{ appointment.student.name }},
-               гр. {{ appointment.student.group|upper }},
-               {{ appointment.student.email|lower }}</p>
+                <a href="{% url 'teachers:detail' appointment.teacher_id %}">{{ appointment.teacher_name }}</a>
+                ({{ appointment.department }})</p>
+            <p>Студент: {{ appointment.student_name }},
+               гр. {{ appointment.group_name|default:"—"|upper }},
+               {{ appointment.email|lower }}</p>
         </div>
     </div>
 {% else %}

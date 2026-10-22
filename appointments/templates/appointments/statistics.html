@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1>Статистика записей</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ totals.total }}</div>
+            <div>всего записей</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ totals.active }}</div>
+            <div>активных</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card p-3 rounded shadow-sm">
+            <div class="stat-value">{{ totals.cancelled }}</div>
+            <div>отменённых</div>
+        </div>
+    </div>
+</div>
+
+<h2 class="h4">Активные записи по преподавателям</h2>
+<table class="table table-striped bg-white mb-4">
+    <thead><tr><th>Преподаватель</th><th>Мест на консультации</th><th>Записей</th></tr></thead>
+    <tbody>
+        {% for item in by_teacher %}
+            <tr>
+                <td><a href="{% url 'teachers:detail' item.id %}">{{ item.teacher_name }}</a></td>
+                <td>{{ item.max_students }}</td>
+                <td>{{ item.appointments_count }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">Данные отсутствуют.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="h4">Кафедры</h2>
+<table class="table table-striped bg-white mb-4">
+    <thead><tr><th>Кафедра</th><th>Преподавателей</th><th>Мест всего</th></tr></thead>
+    <tbody>
+        {% for item in by_department %}
+            <tr>
+                <td>{{ item.department }}</td>
+                <td>{{ item.teachers_count }}</td>
+                <td>{{ item.total_seats }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">Данные отсутствуют.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="h4">Студенты с несколькими активными записями</h2>
+<ul class="list-group">
+    {% for item in frequent_students %}
+        <li class="list-group-item">
+            {{ item.student_name }} (гр. {{ item.group_name|default:"—" }}) —
+            активных записей: {{ item.appointments_count }}
+        </li>
+    {% empty %}
+        <li class="list-group-item">Таких студентов нет.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
