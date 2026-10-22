@@ -1,8 +1,9 @@
 # Сервис планирования консультационных часов
 
-Консольное приложение для записи студентов на консультации к преподавателям.
+Приложение для записи студентов на консультации к преподавателям.
 Предметная область представлена объектной моделью (классы `Teacher`,
-`Student`, `Appointment`).
+`Student`, `Appointment`). Проект имеет консольную версию (`main.py`)
+и веб-интерфейс на Django (проект `consultplan`).
 
 ## Целевая аудитория
 Студенты и преподаватели.
@@ -55,12 +56,38 @@ appointment
 * записи: `is_teacher_available()`, `create_appointment()`,
   `cancel_appointment()`, `get_consultation_status()` (функция из ПР1).
 
+## Веб-интерфейс (Django)
+Технологии: Python, Django 5.2, HTML, CSS и Bootstrap 5.3.
+
+Django-приложения:
+* `homepage` — главная страница, общий HTML-каркас `page()`, страница 404;
+* `teachers` — список преподавателей (поиск по ФИО, отбор по местам)
+  и карточка преподавателя;
+* `appointments` — список записей и страница отдельной записи.
+
+| URL | View | Страница |
+|-----|------|----------|
+| `/` | `homepage.views.index` | главная |
+| `/teachers/` | `teachers.views.teacher_list` | преподаватели |
+| `/teachers/<id>/` | `teachers.views.teacher_detail` | преподаватель |
+| `/appointments/` | `appointments.views.appointment_list` | записи |
+| `/appointments/<id>/` | `appointments.views.appointment_detail` | запись |
+
+View-функции получают данные через `storage.load_project_data()`
+(JSON → объекты `Teacher`, `Student`, `Appointment`) и формируют HTML-ответ.
+Для несуществующих объектов возвращается код 404.
+
 ## Структура проекта
 ```
 Individual_project/
 ├── README.md
 ├── requirements.txt
-├── main.py              — точка запуска, меню, вывод данных
+├── manage.py            — управление Django-проектом
+├── consultplan/         — настройки и корневые маршруты Django
+├── homepage/            — приложение главной страницы
+├── teachers/            — приложение преподавателей
+├── appointments/        — приложение записей
+├── main.py              — консольная версия: меню, вывод данных
 ├── storage.py           — JSON ↔ объекты
 ├── utils.py             — безопасный ввод чисел, дат и строк
 ├── models/
@@ -77,18 +104,28 @@ Individual_project/
     ├── test_teachers.py
     ├── test_students.py
     ├── test_appointments.py
-    └── test_storage.py
+    ├── test_storage.py
+    └── test_web.py      — проверка страниц Django
 ```
 
 ## Требования
 - Python 3.10+;
+- Django 5.2;
 - pytest, flake8.
 
 ```
+python -m venv venv
+venv\Scriptsctivate
 pip install -r requirements.txt
 ```
 
-## Запуск программы
+## Запуск веб-приложения
+```
+python manage.py runserver
+```
+Адрес: http://127.0.0.1:8000/
+
+## Запуск консольной версии
 ```
 python main.py
 ```
@@ -104,7 +141,7 @@ flake8
 ```
 
 ## План развития
-- веб-приложение на Django;
+- шаблоны Django и статические файлы;
 - база данных;
 - пользователи и авторизация;
 - REST API, Docker, CI/CD.

@@ -9,6 +9,11 @@ from models import Appointment, Student, Teacher
 from models.students import find_student_by_id
 from models.teachers import find_teacher_by_id
 
+DATA_DIR = Path(__file__).resolve().parent / "data"
+TEACHERS_FILE = DATA_DIR / "teachers.json"
+STUDENTS_FILE = DATA_DIR / "students.json"
+APPOINTMENTS_FILE = DATA_DIR / "appointments.json"
+
 
 def load_json(filename: str | Path) -> list[dict]:
     """Прочитать список записей из JSON-файла.
@@ -103,3 +108,13 @@ def save_appointments(
 ) -> None:
     """Сохранить записи: объекты Appointment -> JSON."""
     save_json(filename, [a.to_data() for a in appointments])
+
+
+def load_project_data() -> tuple[
+    List[Teacher], List[Student], List[Appointment]
+]:
+    """Загрузить все данные проекта из каталога data/."""
+    teachers = load_teachers(TEACHERS_FILE)
+    students = load_students(STUDENTS_FILE)
+    appointments = load_appointments(APPOINTMENTS_FILE, teachers, students)
+    return teachers, students, appointments

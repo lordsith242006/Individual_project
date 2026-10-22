@@ -1,6 +1,5 @@
 """Сервис планирования консультационных часов: консольная версия."""
 
-from pathlib import Path
 from typing import List, Optional
 
 from models import Appointment, Student, Teacher
@@ -21,19 +20,15 @@ from models.teachers import (
     sort_teachers,
 )
 from storage import (
-    load_appointments,
-    load_students,
-    load_teachers,
+    APPOINTMENTS_FILE,
+    STUDENTS_FILE,
+    TEACHERS_FILE,
+    load_project_data,
     save_appointments,
     save_students,
     save_teachers,
 )
 from utils import input_date, input_int, input_text
-
-DATA_DIR = Path(__file__).resolve().parent / "data"
-TEACHERS_FILE = DATA_DIR / "teachers.json"
-STUDENTS_FILE = DATA_DIR / "students.json"
-APPOINTMENTS_FILE = DATA_DIR / "appointments.json"
 
 MENU = """
 === Сервис планирования консультаций ===
@@ -121,9 +116,7 @@ def book(
 
 def main() -> None:
     """Точка запуска: цикл меню и вызов функций проекта."""
-    teachers = load_teachers(TEACHERS_FILE)
-    students = load_students(STUDENTS_FILE)
-    appointments = load_appointments(APPOINTMENTS_FILE, teachers, students)
+    teachers, students, appointments = load_project_data()
 
     while True:
         print(MENU)
